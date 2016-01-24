@@ -1,5 +1,14 @@
 var React = require('react');
 
+var FancyButton = React.createClass({
+    render: function() {
+        return <button onClick={this.props.onClick}>
+            <i className={"fa " + this.props.icon}></i>
+            <span>{this.props.text}</span>
+        </button>
+    }
+});
+
 module.exports =  React.createClass({
     getInitialState: function() {
         return {

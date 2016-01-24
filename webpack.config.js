@@ -2,7 +2,7 @@
  * Created by hridhya on 1/23/16.
  */
 module.exports = {
-    entry: './index.jsx',
+    entry: './Todos.jsx',
     output: {
         filename: 'bundle.js', //this is the default name, so you can skip it
         //at this directory our bundle file will be available
@@ -27,3 +27,5 @@ module.exports = {
         extensions: ['', '.js', '.jsx']
     }
 };
+
+//webpack-dev-server --progress --colors --port 8090
