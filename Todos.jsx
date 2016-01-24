@@ -3,57 +3,79 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var ListItemWrapper = React.createClass({
-    render: function() {
-        return <li>{this.props.data}</li>;
-    }
-});
-var TodoList = React.createClass({
-    render: function() {
-        return (
-            <ul>
-                {this.props.items.map(function(result) {
-                    return <ListItemWrapper key={result.id} data={result}/>;
-                })}
-            </ul>
-        );
+console.clear();
+
+var TaskList = React.createClass({
+    deleteElement:function(){
+        console.log("remove");
+    },
+
+    render: function(){
+        var displayTask  = function(task, taskIndex){
+            console.log("NEW ADDED TASK"+task);
+
+            return <li>
+                {task}
+                <button onClick= {this.deleteElement}> Delete </button>
+            </li>;
+        };
+
+        return <ol>
+            {this.props.items.map((task, taskIndex) =>
+                <li key={taskIndex}>
+                    {task}
+                    <button onClick={this.props.deleteTask} value={taskIndex}> Delete </button>
+                </li>
+            )}
+        </ol>;
     }
 });
 
-var TodoApp = React.createClass({
-    getInitialState: function() {
-        return {items: [], text: ''};
+var TaskApp = React.createClass({
+    getInitialState: function(){
+        return {
+            items: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+            task: ''
+        }
+    },
+
+    deleteTask: function(e) {
+        var taskIndex = parseInt(e.target.value, 10);
+        console.log('remove task: %d', taskIndex, this.state.items[taskIndex]);
+        this.setState(state => {
+            state.items.splice(taskIndex, 1);
+            return {items: state.items};
+        });
     },
 
     onChange: function(e) {
-        this.setState({text: e.target.value});
+        this.setState({ task: e.target.value });
     },
 
-    handleSubmit: function(e) {
+
+
+    addTask:function (e){
+        this.setState({
+            items: this.state.items.concat([this.state.task]),
+            task: ''
+        });
+
         e.preventDefault();
-        var nextItems = this.state.items.concat([this.state.text]);
-        var nextText = '';
-        this.setState({items: nextItems, text: nextText});
     },
 
-    //Add delete feature
-    removeTodo: function(index) {
-        this.state.items.splice(index, 1);
-        this.setState({items: this.state.items});
-    },
-
-    render: function() {
-        return (
+    render: function(){
+        return(
             <div>
-                <h3>TODO</h3>
-                <TodoList items={this.state.items} />
-                <form onSubmit={this.handleSubmit}>
-                    <input onChange={this.onChange} value={this.state.text} />
-                    <button>{'Add #' + (this.state.items.length + 1)}</button>
+                <h1>My Task </h1>
+                <TaskList items={this.state.items} deleteTask={this.deleteTask} />
+
+                <form onSubmit={this.addTask}>
+                    <input onChange={this.onChange} type="text" value={this.state.task}/>
+                    <button> Add Task </button>
                 </form>
             </div>
         );
     }
 });
 
-ReactDOM.render(<TodoApp />, document.getElementById('main'));
+ReactDOM.render(<TaskApp />, document.getElementById('main'));
