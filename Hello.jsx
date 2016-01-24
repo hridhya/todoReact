@@ -7,7 +7,7 @@ module.exports = React.createClass({
     displayName: 'HelloReact',
     render: function(){
         return (
-            <div>Hello React!!!</div>
+            <div>Hello {this.props.name}!</div>
         )
     }
 });
